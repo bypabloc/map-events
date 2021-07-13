@@ -6,6 +6,12 @@ export default {
             url: 'keywords',
         })
     },
+    saveKeyword( { name } ){
+        return endpoint.post({
+            url: 'keywords',
+            params: { name },
+        })
+    },
 
     getEvents(){
         return endpoint.get({

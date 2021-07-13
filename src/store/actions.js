@@ -16,12 +16,12 @@ export default {
                 commit( types.FETCH_KEYWORDS_FAILURE, { error } )
             })
     },
-    saveKeyword({commit}, { text } ){
+    saveKeyword({commit}, { name } ){
         commit( types.FETCH_KEYWORD_SAVE_REQUEST )
-        endpoint.saveKeyword({ text })
+        endpoint.saveKeyword({ name })
             .then(res => {
-                const { text, created_by, created_at } = res.data
-                commit( types.FETCH_KEYWORD_SAVE_SUCCESS, { text, created_by, created_at } )
+                const { name } = res.data
+                commit( types.FETCH_KEYWORD_SAVE_SUCCESS, { name } )
             } )
             .catch( err => {
                 const error = getError(err.response)?.message ? getError(err.response).message : 'Inaccesible'

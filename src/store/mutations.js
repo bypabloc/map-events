@@ -19,10 +19,10 @@ export default {
         state.keywords.save.fetchingData = true;
         state.keywords.save.error = null;
     },
-    [types.FETCH_KEYWORD_SAVE_SUCCESS] (state, { text, created_by, created_at } ){
+    [types.FETCH_KEYWORD_SAVE_SUCCESS] (state, { name } ){
         state.keywords.save.fetchingData = false;
         state.keywords.save.error = null;
-        state.keywords.save.data = { text, created_by, created_at };
+        state.keywords.save.data = { name };
         // state.keywords.data.data = [ { text, created_by, created_at } , ...state.keywords.data.data ];
     },
     [types.FETCH_KEYWORD_SAVE_FAILURE] (state, { error }){
