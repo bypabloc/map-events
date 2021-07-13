@@ -24,7 +24,7 @@
             <i class="fas fa-plus"></i>
         </button>
 
-        <div class="modal fade" id="modalPrueba" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modalEvent" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,6 +55,26 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3 row">
+                                <label for="lat" class="col-sm-3 col-form-label">Longitud</label>
+                                <div class="col-sm-9">
+                                    <select2 
+                                        v-model="dataModal.keyword" 
+                                        :options="keywords" 
+                                        :settings="{ 
+                                            width: '100%' , 
+                                            class : 'form-control' , 
+                                            allowClear : true ,
+                                            placeholder : 'Elija...',
+                                            multiple: true,
+                                        }" 
+                                        class="form-control" 
+                                        @change="myChangeEvent($event)" @select="mySelectEvent($event)"
+                                        
+                                    />
+                                </div>
+                            </div>
+
                         </div>
                         <pre><code>{{ dataModal }}</code></pre>
                     </div>
@@ -79,6 +99,8 @@ import {
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 
+import Select2 from 'vue3-select2-component';
+
 import { Modal } from 'bootstrap';
 
 export default {
@@ -87,6 +109,7 @@ export default {
         LTileLayer,
         LMarker,
         LControlLayers,
+        'select2': Select2,
     },
     data() {
         return {
@@ -106,14 +129,28 @@ export default {
             dataModal: {
                 title: 'Evento',
                 description: '',
-                keyword: '',
                 active: false,
+                keyword: '',
                 coordenadas: {
                     lat: null,
                     lng: null,
                 },
             },
             modal: null,
+            keywords: [
+                {
+                    id : 1,
+                    text : 'Estacion de polocia',
+                },
+                {
+                    id : 2,
+                    text : 'Bomberos',
+                },
+                {
+                    id : 3,
+                    text : 'Primeros auxilios',
+                },
+            ],
         };
     },
     computed: {
@@ -147,7 +184,7 @@ export default {
             // }
         },
         modalOpen(){
-            this.modal = new Modal(document.getElementById('modalPrueba'), {
+            this.modal = new Modal(document.getElementById('modalEvent'), {
                 keyboard: false
             })
             this.modal.show();
@@ -156,6 +193,12 @@ export default {
             console.log('modalClose')
             this.modal.hide();
         },
+        myChangeEvent(val){
+            console.log(val);
+        },
+        mySelectEvent({id, text}){
+            console.log({id, text})
+        },
     },
     created(){
         this.fetchEvents();
@@ -163,11 +206,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
     .fixedButton{
         position: fixed;
         bottom: 0px;
         right: 0px; 
-        z-index: 99999;
+        z-index: 999;
+    }
+
+    .select2-container--open .select2-dropdown--below {
+        z-index: 9999;
     }
 </style>
