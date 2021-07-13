@@ -1,4 +1,6 @@
 export default {
+    isConnected: false,
+    
     keywords: {
         fetchingData: false,
         error: null,

@@ -1,5 +1,6 @@
 <template>
     <div style="height: 100vh; width: 100vw;">
+
         <l-map
             v-model="zoom"
             v-model:zoom="zoom"
@@ -164,8 +165,18 @@
                 </div>
             </div>
         </div>
+
+        <button 
+            type="button"
+            class="btn btn-primary fixedButtonRightPing rounded-circle m-3"
+            @click="ping()"
+        >
+            <i class="fas fa-list-ul"></i>
+        </button>
     </div>
 </template>
+
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
 
 <script>
 import { mapState, mapActions } from "vuex";
@@ -215,6 +226,14 @@ export default {
             'events',
             'keywords',
         ]),
+    },
+    sockets: {
+        connect: function () {
+            console.log('socket connected')
+        },
+        customEmit: function (data) {
+            console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)',data)
+        },
     },
     methods: {
         ...mapActions([
@@ -297,6 +316,15 @@ export default {
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },
+        ping(){
+
+            this.$socket.emit('pingServer', 'PING!')
+        },
+    },
+    mounted () {
+        this.$socket.on("chat-message", function(data) {
+            console.log("Mensaje por aca", data)
+        })
     },
     created(){
         this.fetchKeywords();
@@ -327,14 +355,18 @@ export default {
         left: 0px; 
         z-index: 999;
     }
-    
     .fixedButtonLeftList{
         position: fixed;
         bottom: 50px;
         left: 0px; 
         z-index: 999;
     }
-
+    .fixedButtonRightPing{
+        position: fixed;
+        bottom: 50px;
+        right: 0px; 
+        z-index: 999;
+    }
     .fixedButton{
         position: fixed;
         bottom: 0px;

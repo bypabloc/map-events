@@ -63,4 +63,16 @@ export default {
         state.events.save.fetchingData = false;
         state.events.save.error = error;
     },
+
+    SOCKET_CONNECT(state) {
+        state.isConnected = true;
+    },
+
+    SOCKET_DISCONNECT(state) {
+        state.isConnected = false;
+    },
+
+    SOCKET_MESSAGECHANNEL(state, message) {
+        state.socketMessage = message
+    }
 }

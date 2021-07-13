@@ -2,6 +2,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 // import router from './router'
+import VueSocketIO from 'vue-socket.io'
+import io from 'socket.io-client';
+
+// export const SocketInstance = socketio('http://localhost:3000');
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -98,7 +102,33 @@ app.mixin({
         },
     },
 })
+// app.use(VueSocketIO, SocketInstance)
+
+const socketio = new VueSocketIO({
+    debug: true,
+    connection: io('http://localhost:3000'),
+    // vuex: {
+    //   store,
+    //   actionPrefix: 'SOCKET_',
+    //   mutationPrefix: 'SOCKET_',
+    // },
+});
+/*
+app.use(socketio, {
+    debug: true,
+    connection: 'http://localhost:3000',
+    vuex: {
+        store,
+        actionPrefix: 'SOCKET_',
+        mutationPrefix: 'SOCKET_'
+    },
+    options: {
+      debug: true,
+      transports: ['websocket', 'polling'],
+    },
+});
+*/
 app.use(VueSweetalert2);
 app.use(store)
-// app.use(router)
+app.use(socketio)
 app.mount('#app')
