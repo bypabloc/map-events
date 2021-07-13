@@ -15,7 +15,11 @@
       </l-marker>
 
     </l-map>
-    <button @click="changeIcon">New kitten icon</button>
+    
+    <a class="fixedButton" href>
+        <div class="roundedFixedBtn"><i class="fas fa-plus"></i></div>
+    </a>
+
   </div>
 </template>
 
@@ -80,3 +84,25 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.fixedButton{
+    position: fixed;
+    bottom: 0px;
+    right: 0px; 
+    padding: 20px;
+    z-index: 99999;
+}
+.roundedFixedBtn{
+    height: 60px;
+    line-height: 70px;  
+    width: 60px;  
+    font-size: 2em;
+    font-weight: bold;
+    border-radius: 50%;
+    background-color: #0dcaf0;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+</style>
