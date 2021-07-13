@@ -9,7 +9,12 @@ export default {
     [types.FETCH_KEYWORDS_SUCCESS] (state, { list } ){
         state.keywords.fetchingData = false;
         state.keywords.error = null;
-        state.keywords.data = { list };
+        state.keywords.data.list = list.map((x) => {
+            return {
+                id: x._id,
+                text: x.text,
+            };
+        });
     },
     [types.FETCH_KEYWORDS_FAILURE] (state, { error }){
         state.keywords.fetchingData = true;
@@ -19,11 +24,11 @@ export default {
         state.keywords.save.fetchingData = true;
         state.keywords.save.error = null;
     },
-    [types.FETCH_KEYWORD_SAVE_SUCCESS] (state, { name } ){
+    [types.FETCH_KEYWORD_SAVE_SUCCESS] (state, { id, text } ){
         state.keywords.save.fetchingData = false;
         state.keywords.save.error = null;
-        state.keywords.save.data = { name };
-        // state.keywords.data.data = [ { text, created_by, created_at } , ...state.keywords.data.data ];
+        state.keywords.save.data = { id, text };
+        state.keywords.data.list.push({ id, text });
     },
     [types.FETCH_KEYWORD_SAVE_FAILURE] (state, { error }){
         state.keywords.save.fetchingData = false;

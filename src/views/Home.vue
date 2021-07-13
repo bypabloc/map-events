@@ -59,12 +59,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{ dataModal.title }}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Evento</h5>
                         <button type="button" class="btn-close" v-on:click="modalClose" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3 row">
-                            <label for="description" class="col-sm-3 col-form-label">Description</label>
+                            <label for="description" class="col-sm-3 col-form-label">Descripción</label>
                             <div class="col-sm-9">
                                 <input type="text" name="description" class="form-control" v-model="dataModal.description">
                             </div>
@@ -87,11 +87,11 @@
                             </div>
 
                             <div class="mb-3 row">
-                                <label for="lat" class="col-sm-3 col-form-label">Longitud</label>
+                                <label for="lat" class="col-sm-3 col-form-label">Keywords</label>
                                 <div class="col-sm-9">
                                     <select2 
-                                        v-model="dataModal.keyword" 
-                                        :options="keywords" 
+                                        v-model="dataModal.keywords" 
+                                        :options="keywords.data?.list" 
                                         :settings="{ 
                                             width: '100%' , 
                                             class : 'form-control' , 
@@ -100,18 +100,15 @@
                                             multiple: true,
                                         }" 
                                         class="form-control" 
-                                        @change="myChangeEvent($event)" @select="mySelectEvent($event)"
-                                        
                                     />
                                 </div>
                             </div>
 
                         </div>
-                        <pre><code>{{ dataModal }}</code></pre>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addEvent">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -161,7 +158,7 @@ export default {
                 title: 'Evento',
                 description: '',
                 active: false,
-                keyword: '',
+                keywords: '',
                 coordenadas: {
                     lat: null,
                     lng: null,
@@ -169,20 +166,20 @@ export default {
             },
             modal: null,
             keywordsNew: '',
-            keywords: [
-                {
-                    id : 1,
-                    text : 'Estacion de polocia',
-                },
-                {
-                    id : 2,
-                    text : 'Bomberos',
-                },
-                {
-                    id : 3,
-                    text : 'Primeros auxilios',
-                },
-            ],
+            // keywords: [
+            //     {
+            //         id : 1,
+            //         text : 'Estacion de polocia',
+            //     },
+            //     {
+            //         id : 2,
+            //         text : 'Bomberos',
+            //     },
+            //     {
+            //         id : 3,
+            //         text : 'Primeros auxilios',
+            //     },
+            // ],
         };
     },
     computed: {
@@ -213,7 +210,7 @@ export default {
             this.modal.show();
         },
         modalCloseKeyword(){
-            console.log('modalClose')
+            this.keywordsNew = '';
             this.modal.hide();
         },
         
@@ -241,18 +238,24 @@ export default {
             this.modal.show();
         },
         modalClose(){
-            console.log('modalClose')
+            this.dataModal = {
+                description: '',
+                keywords: '',
+                coordenadas: {
+                    lat: null,
+                    lng: null,
+                },
+            },
             this.modal.hide();
-        },
-        myChangeEvent(val){
-            console.log(val);
-        },
-        mySelectEvent({id, text}){
-            console.log({id, text})
         },
 
         addKeyword(){
-            this.saveKeyword({name:this.keywordsNew})
+            this.saveKeyword({text:this.keywordsNew})
+            this.modalCloseKeyword()
+        },
+        addEvent(){
+            this.saveEvent({...this.dataModal})
+            this.modalClose()
         },
     },
     created(){

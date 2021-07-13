@@ -6,10 +6,10 @@ export default {
             url: 'keywords',
         })
     },
-    saveKeyword( { name } ){
+    saveKeyword( { text } ){
         return endpoint.post({
             url: 'keywords',
-            params: { name },
+            params: { text },
         })
     },
 
@@ -20,7 +20,7 @@ export default {
     },
     saveEvent( { text } ){
         return endpoint.post({
-            url: 'events/new',
+            url: 'events',
             params: { text },
         })
     },
