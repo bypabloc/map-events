@@ -1,26 +1,47 @@
 <template>
-  <div style="height: 94vh; width: 95vw;">
-    <l-map
-        v-model="zoom"
-        v-model:zoom="zoom"
-        @move="log('move')"
-        @click="addMarker"
-    >
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      ></l-tile-layer>
-      <l-control-layers />
+    <div style="height: 100vh; width: 100vw;">
+        <l-map
+            v-model="zoom"
+            v-model:zoom="zoom"
+            @click="addMarker"
+        >
 
-      <l-marker v-for="(value, index) in markers" :key="index" :lat-lng="[value.lat,value.lng]" @click="remMarker">
-      </l-marker>
+            <l-tile-layer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ></l-tile-layer>
 
-    </l-map>
-    
-    <a class="fixedButton" href>
-        <div class="roundedFixedBtn"><i class="fas fa-plus"></i></div>
-    </a>
+            <l-control-layers />
 
-  </div>
+            <l-marker v-for="(value, index) in markers" :key="index" :lat-lng="[value.lat,value.lng]" @click="remMarker"/>
+
+        </l-map>
+
+        <button 
+            type="button"
+            class="btn btn-primary fixedButton rounded-circle m-3"
+            @click="newMarker({})"
+        >
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <div class="modal fade" id="modalPrueba" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{ dataModal.title }}</h5>
+                        <button type="button" class="btn-close" v-on:click="modalClose" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <pre><code>{{ dataModal }}</code></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -31,6 +52,8 @@ import {
   LControlLayers,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
+
+import { Modal } from 'bootstrap';
 
 export default {
     components: {
@@ -54,24 +77,36 @@ export default {
                     lng: 70.26588639771171,
                 },
             ],
+            dataModal: {
+                title: 'Evento',
+                description: '',
+                keyword: '',
+                active: false,
+                coordenadas: {
+                    lat: null,
+                    lng: null,
+                },
+            },
+            modal: null,
         };
     },
     computed: {
     },
     methods: {
-        log(a) {
-            console.log(a);
+        add() {
+            console.log('add')
         },
-        changeIcon() {
-            this.iconWidth += 2;
-            if (this.iconWidth > this.iconHeight) {
-                this.iconWidth = Math.floor(this.iconHeight / 2);
-            }
+        newMarker(){
+            this.dataModal.coordenadas = null;
+            this.modalOpen()
         },
         addMarker(event) {
             if(event.latlng){
                 console.log('event',event.latlng)
-                this.markers.push(event.latlng);
+                const { lat, lng } = event.latlng;
+                this.dataModal.coordenadas = { lat, lng };
+                this.modalOpen()
+                // this.markers.push(event.latlng);
             }
         },
         remMarker(event) {
@@ -81,28 +116,16 @@ export default {
             //     this.markers.push(event.latlng);
             // }
         },
+        modalOpen(){
+            this.modal = new Modal(document.getElementById('modalPrueba'), {
+                keyboard: false
+            })
+            this.modal.show();
+        },
+        modalClose(){
+            console.log('modalClose')
+            this.modal.hide();
+        },
     },
 };
 </script>
-
-<style scoped>
-.fixedButton{
-    position: fixed;
-    bottom: 0px;
-    right: 0px; 
-    padding: 20px;
-    z-index: 99999;
-}
-.roundedFixedBtn{
-    height: 60px;
-    line-height: 70px;  
-    width: 60px;  
-    font-size: 2em;
-    font-weight: bold;
-    border-radius: 50%;
-    background-color: #0dcaf0;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-}
-</style>

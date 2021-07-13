@@ -1,8 +1,6 @@
 <template>
-    <div :class="'d-flex justify-content-center theme-bg-'+[theme]+'-600'">
-        <main class="p-3">
-            <router-view></router-view>
-        </main>
+    <div>
+          <router-view></router-view>
     </div>
 </template>
 
