@@ -12,7 +12,22 @@
 
             <l-control-layers />
 
-            <l-marker v-for="(value, index) in events.data.list" :key="index" :lat-lng="[value.coordenadas.lat,value.coordenadas.lng]" @click="remMarker"/>
+            <l-marker v-for="(value, index) in events.data.list" :key="index" :lat-lng="[value.coordenadas.lat,value.coordenadas.lng]" @click="remMarker">
+                <l-tooltip>
+                    Descripción: {{ value.description }}
+                    <br/>
+                    Coordenadas:
+                    <ul>
+                        <li>
+                            Latitud: {{ value.coordenadas.lat }}
+                        </li>
+                        <li>
+                            Longitud: {{ value.coordenadas.lng }}
+                        </li>
+                    </ul>
+                    Keywords: {{ value.keywords }}
+                </l-tooltip>
+            </l-marker>
 
         </l-map>
 
@@ -124,6 +139,7 @@ import {
   LTileLayer,
   LMarker,
   LControlLayers,
+  LTooltip,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -137,6 +153,7 @@ export default {
         LTileLayer,
         LMarker,
         LControlLayers,
+        LTooltip,
         'select2': Select2,
     },
     data() {
