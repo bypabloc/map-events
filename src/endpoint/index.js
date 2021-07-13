@@ -1,6 +1,12 @@
 import endpoint from '../endpoint/settings'
 
 export default {
+    getKeywords(){
+        return endpoint.get({
+            url: 'keywords',
+        })
+    },
+
     getEvents(){
         return endpoint.get({
             url: 'events',

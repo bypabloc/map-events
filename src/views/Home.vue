@@ -18,6 +18,37 @@
 
         <button 
             type="button"
+            class="btn btn-primary fixedButtonLeft rounded-circle m-3"
+            @click="newKeyword({})"
+        >
+            <i class="far fa-keyboard"></i>
+        </button>
+
+        <div class="modal fade" id="modalKeyword" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Keyword</h5>
+                        <button type="button" class="btn-close" v-on:click="modalClose" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 row">
+                            <label for="name" class="col-sm-3 col-form-label">Nombre</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" class="form-control" v-model="keywordsNew">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="saveKeyword">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button 
+            type="button"
             class="btn btn-primary fixedButton rounded-circle m-3"
             @click="newMarker({})"
         >
@@ -137,6 +168,7 @@ export default {
                 },
             },
             modal: null,
+            keywordsNew: '',
             keywords: [
                 {
                     id : 1,
@@ -156,17 +188,34 @@ export default {
     computed: {
         ...mapState([
             'events',
+            'keywords',
         ]),
     },
     methods: {
         ...mapActions([
             'fetchEvents',
+            'fetchKeywords',
             'saveEvent',
         ]),
         newMarker(){
             this.dataModal.coordenadas = { lat: null, lng: null };
             this.modalOpen()
         },
+        newKeyword(){
+            this.modalOpenKeyword()
+        },
+        modalOpenKeyword(){
+            if(this.modal) this.modal.hide()
+            this.modal = new Modal(document.getElementById('modalKeyword'), {
+                keyboard: false
+            })
+            this.modal.show();
+        },
+        modalCloseKeyword(){
+            console.log('modalClose')
+            this.modal.hide();
+        },
+        
         addMarker(event) {
             if(event.latlng){
                 console.log('event',event.latlng)
@@ -184,6 +233,7 @@ export default {
             // }
         },
         modalOpen(){
+            if(this.modal) this.modal.hide()
             this.modal = new Modal(document.getElementById('modalEvent'), {
                 keyboard: false
             })
@@ -199,14 +249,26 @@ export default {
         mySelectEvent({id, text}){
             console.log({id, text})
         },
+
+        saveKeyword(){
+            console.log('this',this.keywordsNew)
+        },
     },
     created(){
         this.fetchEvents();
+        this.fetchKeywords();
     },
 };
 </script>
 
 <style>
+    .fixedButtonLeft{
+        position: fixed;
+        bottom: 0px;
+        left: 0px; 
+        z-index: 999;
+    }
+
     .fixedButton{
         position: fixed;
         bottom: 0px;
