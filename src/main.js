@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 // import router from './router'
-import VueSocketIO from 'vue-socket.io'
+// import VueSocketIO from 'vue-socket.io'
+import VueSocketIO from './packages/vue-socket.io/dist/vue-socketio'
 import io from 'socket.io-client';
 
 // export const SocketInstance = socketio('http://localhost:3000');
