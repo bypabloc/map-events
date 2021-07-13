@@ -32,6 +32,30 @@
                         <button type="button" class="btn-close" v-on:click="modalClose" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3 row">
+                            <label for="description" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="description" class="form-control" v-model="dataModal.description">
+                            </div>
+                        </div>
+                        <div v-if="dataModal.coordenadas">
+                            <label class="col-sm-3 col-form-label">Coordenadas</label>
+                            
+                            <div class="mb-3 row">
+                                <label for="lat" class="col-sm-3 col-form-label">Latitud</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="dataModal.coordenadas.lat">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 row">
+                                <label for="lat" class="col-sm-3 col-form-label">Longitud</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="dataModal.coordenadas.lng">
+                                </div>
+                            </div>
+
+                        </div>
                         <pre><code>{{ dataModal }}</code></pre>
                     </div>
                     <div class="modal-footer">
@@ -103,7 +127,7 @@ export default {
             'saveEvent',
         ]),
         newMarker(){
-            this.dataModal.coordenadas = null;
+            this.dataModal.coordenadas = { lat: null, lng: null };
             this.modalOpen()
         },
         addMarker(event) {
