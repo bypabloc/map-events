@@ -43,12 +43,13 @@ export default {
                 commit( types.FETCH_EVENTS_FAILURE, { error } )
             })
     },
-    saveEvent({commit}, { text } ){
+
+    saveEvent({commit}, { description, keywords, coordenadas } ){
         commit( types.FETCH_EVENT_SAVE_REQUEST )
-        endpoint.saveEvent({ text })
+        endpoint.saveEvent({ description, keywords, coordenadas })
             .then(res => {
-                const { text, created_by, created_at } = res.data
-                commit( types.FETCH_EVENT_SAVE_SUCCESS, { text, created_by, created_at } )
+                const { description, keywords, coordenadas } = res
+                commit( types.FETCH_EVENT_SAVE_SUCCESS, { description, keywords, coordenadas }  )
             } )
             .catch( err => {
                 const error = getError(err.response)?.message ? getError(err.response).message : 'Inaccesible'

@@ -18,10 +18,10 @@ export default {
             url: 'events',
         })
     },
-    saveEvent( { text } ){
+    saveEvent( { description, keywords, coordenadas } ){
         return endpoint.post({
             url: 'events',
-            params: { text },
+            params: { description, keywords, coordenadas },
         })
     },
 }
