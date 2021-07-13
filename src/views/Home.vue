@@ -156,7 +156,6 @@
                                 {{ item.text }}
                             </label>
                         </div>
-                        {{ keywordsFiltered }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
@@ -210,11 +209,6 @@ export default {
             keywordsNew: '',
             keywordsFiltered: [],
         };
-    },
-    watch: {
-        ['keywords.data.list'] ( newValue ) {
-            console.log('newValue',newValue)
-        },
     },
     computed: {
         ...mapState([
@@ -305,6 +299,8 @@ export default {
         },
     },
     created(){
+        this.fetchKeywords();
+
         const urlParams = new URLSearchParams(window.location.search);
         
         const keywords = urlParams.get('keywords');
@@ -320,7 +316,6 @@ export default {
         }
 
         this.fetchEvents({keywords:this.keywordsFiltered});
-        this.fetchKeywords();
     },
 };
 </script>
