@@ -156,6 +156,7 @@
                                 {{ item.text }}
                             </label>
                         </div>
+                        {{ keywordsFiltered }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
@@ -304,6 +305,20 @@ export default {
         },
     },
     created(){
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        const keywords = urlParams.get('keywords');
+        if(keywords){
+            const keywordsToFilter = [];
+            const arr = keywords.split(",");
+            if(arr?.length>0){
+                for (const e of arr) {
+                    keywordsToFilter.push(e)
+                }
+            }
+            this.keywordsFiltered = keywordsToFilter;
+        }
+
         this.fetchEvents({keywords:this.keywordsFiltered});
         this.fetchKeywords();
     },
