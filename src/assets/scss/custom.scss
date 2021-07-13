@@ -1,0 +1,128 @@
+@import "/node_modules/bootstrap/scss/bootstrap";
+
+$black: #262626;
+$white: #FBFBFB;
+
+$amber: #FFC107;
+$blue-gray: #607D8B;
+$blue: #2196F3;
+$brown: #795548;
+$cyan: #00BCD4;
+$deep-orange: #FF5722;
+$deep-purple: #673AB7;
+$gray: #9E9E9E;
+$green: #4CAF50;
+$indigo: #3F51B5;
+$light-blue: #03A9F4;
+$light-green: #8BC34A;
+$lime: #CDDC39;
+$orange: #FF9800;
+$pink: #E91E63;
+$purple: #9C27B0;
+$red: #F44336;
+$teal: #26A69A;
+$yellow: #FFEB3B;
+
+$colors: (
+    "black": $black,
+    "white": $white,
+
+    "amber": $amber,
+    "blue-gray": $blue-gray,
+    "blue": $blue,
+    "brown": $brown,
+    "cyan": $cyan,
+    "deep-orange": $deep-orange,
+    "deep-purple": $deep-purple,
+    "gray": $gray,
+    "green": $green,
+    "indigo": $indigo,
+    "light-blue": $light-blue,
+    "light-green": $light-green,
+    "lime": $lime,
+    "orange": $orange,
+    "pink": $pink,
+    "purple": $purple,
+    "red": $red,
+    "teal": $teal,
+    "yellow": $yellow
+);
+
+@function tint($color, $percentage) {
+    @return mix($white, $color, $percentage);
+}
+@function shade($color, $percentage) {
+    @return mix($black, $color, $percentage);
+}
+
+@mixin make-color-classes( $class_prefix, $color_name, $color ){
+
+    $swatch_variations: (90, 80, 70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90);
+
+    $i: 0.5;
+    @each $variation in $swatch_variations {
+
+        $color_number: $i * 100;
+        $swatch_color: '';
+        
+        @if ($variation > 0){
+            $swatch_color: tint($color,$variation);
+        }@else if ($variation < 0) {
+            $swatch_color: shade($color,($variation*-1));
+        }@else{
+            $color_number: 500;
+            $swatch_color: $color;
+        }
+
+        .theme-#{$color_name}-#{$color_number} {
+            color: color-contrast($swatch_color);
+            background-color: $swatch_color;
+        }
+        .theme-#{$color_name}-#{$color_number} {
+            color: color-contrast($swatch_color);
+        }
+        .theme-#{$color_name}-#{$color_number}:link {
+            color: color-contrast($swatch_color);
+            font-weight: bold;
+        }
+        .theme-#{$color_name}-#{$color_number}:visited {
+            color: color-contrast($swatch_color);
+        }
+        .theme-#{$color_name}-#{$color_number}:hover {
+            color: color-contrast($swatch_color);
+        }
+        .theme-#{$color_name}-#{$color_number}:active {
+            color: color-contrast($swatch_color);
+        }
+
+        .theme-border-#{$color_name}-#{$color_number} {
+            border: 6px solid $swatch_color !important;
+        }
+
+        .theme-bg-#{$color_name}-#{$color_number} {
+            background-color: $swatch_color;
+        }
+
+        .theme-color-#{$color_name}-#{$color_number} {
+            color: $swatch_color;
+        }
+        .theme-color-#{$color_name}-#{$color_number}:link {
+            color: $swatch_color;
+        }
+        .theme-color-#{$color_name}-#{$color_number}:visited {
+            color: $swatch_color;
+        }
+        .theme-color-#{$color_name}-#{$color_number}:hover {
+            color: $swatch_color;
+        }
+        .theme-color-#{$color_name}-#{$color_number}:active {
+            color: $swatch_color;
+        }
+
+        $i: $i + 0.5;
+    } 
+}
+
+@each $color_name, $color in $colors {
+    @include make-color-classes('color', $color_name, $color);
+}
