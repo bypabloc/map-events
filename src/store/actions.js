@@ -29,12 +29,11 @@ export default {
             })
     },
 
-    fetchEvents({commit}){
+    fetchEvents({commit},{ keywords }){
 
         commit(types.FETCH_EVENTS_REQUEST)
-        endpoint.getEvents()
+        endpoint.getEvents({ keywords })
             .then(res => {
-                console.log('res',res)
                 const { list } = res
                 commit( types.FETCH_EVENTS_SUCCESS, { list } )
             } )

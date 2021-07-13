@@ -25,7 +25,12 @@
                             Longitud: {{ value.coordenadas.lng }}
                         </li>
                     </ul>
-                    Keywords: {{ value.keywords }}
+                    Keywords
+                    <ul>
+                        <li v-for="(item, i) in value.keywords" :key="i" >
+                            {{ item }}
+                        </li>
+                    </ul>
                 </l-tooltip>
             </l-marker>
 
@@ -128,6 +133,37 @@
                 </div>
             </div>
         </div>
+
+        <button 
+            type="button"
+            class="btn btn-primary fixedButtonLeftList rounded-circle m-3"
+            @click="listKeywords({})"
+        >
+            <i class="fas fa-list-ul"></i>
+        </button>
+
+        <div class="modal fade" id="modalKeywords" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Keywords</h5>
+                        <button type="button" class="btn-close" v-on:click="modalClose" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-check" v-for="(item, i) in keywords.data.list" :key="i">
+                            <input class="form-check-input" type="checkbox" :value="item.text" :id="item.text" name="keywords" v-model="keywordsFiltered">
+                            <label class="form-check-label" :for="item.text">
+                                {{ item.text }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="filterKeywords">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -159,18 +195,6 @@ export default {
     data() {
         return {
             zoom: 2,
-            iconWidth: 25,
-            iconHeight: 40,
-            markers: [
-                {
-                    lat: -1.322748592538121,
-                    lng: 76.26588639771171,
-                },
-                {
-                    lat: -1.322748592538121,
-                    lng: 70.26588639771171,
-                },
-            ],
             dataModal: {
                 title: 'Evento',
                 description: '',
@@ -183,21 +207,13 @@ export default {
             },
             modal: null,
             keywordsNew: '',
-            // keywords: [
-            //     {
-            //         id : 1,
-            //         text : 'Estacion de polocia',
-            //     },
-            //     {
-            //         id : 2,
-            //         text : 'Bomberos',
-            //     },
-            //     {
-            //         id : 3,
-            //         text : 'Primeros auxilios',
-            //     },
-            // ],
+            keywordsFiltered: [],
         };
+    },
+    watch: {
+        ['keywords.data.list'] ( newValue ) {
+            console.log('newValue',newValue)
+        },
     },
     computed: {
         ...mapState([
@@ -247,6 +263,14 @@ export default {
             //     this.markers.push(event.latlng);
             // }
         },
+        
+        listKeywords(){
+            if(this.modal) this.modal.hide()
+            this.modal = new Modal(document.getElementById('modalKeywords'), {
+                keyboard: false
+            })
+            this.modal.show();
+        },
         modalOpen(){
             if(this.modal) this.modal.hide()
             this.modal = new Modal(document.getElementById('modalEvent'), {
@@ -274,9 +298,13 @@ export default {
             this.saveEvent({...this.dataModal})
             this.modalClose()
         },
+        filterKeywords(){
+            this.fetchEvents({keywords:this.keywordsFiltered});
+            this.modalClose()
+        },
     },
     created(){
-        this.fetchEvents();
+        this.fetchEvents({keywords:this.keywordsFiltered});
         this.fetchKeywords();
     },
 };
@@ -286,6 +314,13 @@ export default {
     .fixedButtonLeft{
         position: fixed;
         bottom: 0px;
+        left: 0px; 
+        z-index: 999;
+    }
+    
+    .fixedButtonLeftList{
+        position: fixed;
+        bottom: 50px;
         left: 0px; 
         z-index: 999;
     }

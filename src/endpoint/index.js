@@ -13,9 +13,10 @@ export default {
         })
     },
 
-    getEvents(){
-        return endpoint.get({
-            url: 'events',
+    getEvents( { keywords } ){
+        return endpoint.post({
+            url: 'events-list',
+            params: { keywords },
         })
     },
     saveEvent( { description, keywords, coordenadas } ){
