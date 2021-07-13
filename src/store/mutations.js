@@ -52,10 +52,11 @@ export default {
         state.events.save.fetchingData = true;
         state.events.save.error = null;
     },
-    [types.FETCH_EVENT_SAVE_SUCCESS] (state, { text, created_by, created_at } ){
+    [types.FETCH_EVENT_SAVE_SUCCESS] (state, { description, keywords, coordenadas } ){
         state.events.save.fetchingData = false;
         state.events.save.error = null;
-        state.events.save.data = { text, created_by, created_at };
+        state.events.save.data = { description, keywords, coordenadas };
+        state.events.data.list.push({ description, keywords, coordenadas });
         // state.events.data.data = [ { text, created_by, created_at } , ...state.events.data.data ];
     },
     [types.FETCH_EVENT_SAVE_FAILURE] (state, { error }){

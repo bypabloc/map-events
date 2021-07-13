@@ -12,7 +12,7 @@
 
             <l-control-layers />
 
-            <l-marker v-for="(value, index) in markers" :key="index" :lat-lng="[value.lat,value.lng]" @click="remMarker"/>
+            <l-marker v-for="(value, index) in events.data.list" :key="index" :lat-lng="[value.coordenadas.lat,value.coordenadas.lng]" @click="remMarker"/>
 
         </l-map>
 
