@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 import {
   LMap,
   LTileLayer,
@@ -91,11 +93,15 @@ export default {
         };
     },
     computed: {
+        ...mapState([
+            'events',
+        ]),
     },
     methods: {
-        add() {
-            console.log('add')
-        },
+        ...mapActions([
+            'fetchEvents',
+            'saveEvent',
+        ]),
         newMarker(){
             this.dataModal.coordenadas = null;
             this.modalOpen()
@@ -127,5 +133,17 @@ export default {
             this.modal.hide();
         },
     },
+    created(){
+        this.fetchEvents();
+    },
 };
 </script>
+
+<style scoped>
+    .fixedButton{
+        position: fixed;
+        bottom: 0px;
+        right: 0px; 
+        z-index: 99999;
+    }
+</style>

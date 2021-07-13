@@ -1,39 +1,18 @@
 export default {
-    theme: 'blue',
-    
-    user: {
-        loggedIn: false,
-        data: null,
+    events: {
+        fetchingData: false,
         error: null,
-        register: {
-            error: null
-        },
-    },
-
-    data: {
-        config: {
-            data: {
-                img : null,
-            },
+        data: [],
+        save: {
             fetchingData: false,
-            err: null,
+            error: null,
+            data: {
+                description: '',
+                coordinates: {
+                    lat: 44.575287999258315,
+                    lng: 45.08166464862419,
+                },
+            },
         },
-        prouds: [],
-        educations: [],
-        skills: [],
     },
-
-    fetchingData: true,
-    error: null,
-
-    prouds: [/**
-        {
-            id: '',
-            icon: 'icon',
-            title: 'title',
-            description: 'description',
-        },
-    */],
-    educations: [],
-    skills: [],
 }
