@@ -63,7 +63,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
-                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Guardar</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Suscribir</button>
                     </div>
                 </div>
             </div>
@@ -230,8 +230,18 @@ export default {
             console.log('socket connected')
         },
         keywords({ keywords }) {
-            this.keywordsFiltered = keywords;
+            console.log('{ keywords }',{ keywords })
+            // this.keywordsFiltered = keywords;
         },
+    },
+    watch: {
+        connect: function () {
+        },
+        /*
+        ['keywordsFiltered'] ( keywords ) {
+            this.setKeywordsFiltered({ keywords })
+        },
+        */
     },
     methods: {
         ...mapActions([
@@ -239,6 +249,7 @@ export default {
             'fetchKeywords',
             'saveEvent',
             'saveKeyword',
+            'setKeywordsFiltered',
         ]),
         newMarker(){
             this.dataModal.coordenadas = { lat: null, lng: null };
@@ -261,7 +272,6 @@ export default {
         
         addMarker(event) {
             if(event.latlng){
-                console.log('event',event.latlng)
                 const { lat, lng } = event.latlng;
                 this.dataModal.coordenadas = { lat, lng };
                 this.modalOpen()
@@ -270,10 +280,6 @@ export default {
         },
         remMarker(event) {
             console.log('event',event)
-            // if(event.latlng){
-            //     console.log('event',event.latlng)
-            //     this.markers.push(event.latlng);
-            // }
         },
         
         listKeywords(){
@@ -313,6 +319,7 @@ export default {
             this.modalClose()
         },
         filterKeywords(){
+            // this.setKeywordsFiltered({ keywords: this.keywordsFiltered })
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },
