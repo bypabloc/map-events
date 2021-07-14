@@ -1,15 +1,16 @@
 <template>
-    <div :class="'d-flex justify-content-center theme-bg-'+[theme]+'-600'">
-        <main class="p-3">
-            <router-view></router-view>
-        </main>
+    <div>
+        <home/>
     </div>
 </template>
 
 <script>
 
+import Home from './views/Home'
+
 export default {
     components: {
+        Home,
     },
 };
 </script>
