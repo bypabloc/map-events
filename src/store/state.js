@@ -1,5 +1,6 @@
 export default {
-    isConnected: false,
+
+    keywordsFiltered: [],
     
     keywords: {
         fetchingData: false,

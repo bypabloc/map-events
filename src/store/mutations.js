@@ -28,7 +28,7 @@ export default {
         state.keywords.save.fetchingData = false;
         state.keywords.save.error = null;
         state.keywords.save.data = { id, text };
-        // state.keywords.data.list.push({ id: text, text });
+        state.keywords.data.list.push({ id: text, text });
     },
     [types.FETCH_KEYWORD_SAVE_FAILURE] (state, { error }){
         state.keywords.save.fetchingData = false;
@@ -39,10 +39,10 @@ export default {
         state.events.fetchingData = true;
         state.events.error = null;
     },
-    [types.FETCH_EVENTS_SUCCESS] (state){
+    [types.FETCH_EVENTS_SUCCESS] (state, { list }){
         state.events.fetchingData = false;
         state.events.error = null;
-        // state.events.data = { list };
+        state.events.data = { list };
     },
     [types.FETCH_EVENTS_FAILURE] (state, { error }){
         state.events.fetchingData = true;
@@ -63,13 +63,26 @@ export default {
         state.events.save.error = error;
     },
 
+    [types.SET_KEYWORDS] (state, { keywords } ){
+        state.keywordsFiltered = keywords;
+    },
+
     "SOCKET_KEYWORD_ADD"(state, { text }) {
         state.keywords.data.list.push({ id: text, text });
     },
     "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
-        state.events.data.list.push({ description, keywords, coordenadas });
+        const keywordsFiltered = state.keywordsFiltered
+        if(keywordsFiltered.length>0){
+            const matched = keywordsFiltered.filter(element => keywords.includes(element));
+            if(matched.length>0){
+                state.events.data.list.push({ description, keywords, coordenadas });
+            }
+        }else{
+            state.events.data.list.push({ description, keywords, coordenadas });
+        }
     },
     "SOCKET_LIST"(state, { list }) {
-        state.events.data.list = list;
+        console.log('list',list)
+        // state.events.data.list = list;
     },
 }

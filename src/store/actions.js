@@ -4,6 +4,11 @@ import endpoint, { getError } from '../endpoint'
 // import io from '../endpoint/socket'
 
 export default {
+    
+    setKeywordsFiltered({commit}, { keywords } ){
+        commit( types.SET_KEYWORDS, { keywords } )
+    },
+
     fetchKeywords({commit}){
         commit(types.FETCH_KEYWORDS_REQUEST)
         endpoint.getKeywords()

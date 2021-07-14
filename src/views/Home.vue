@@ -230,7 +230,15 @@ export default {
             console.log('socket connected')
         },
         keywords({ keywords }) {
-            this.keywordsFiltered = keywords;
+            console.log('{ keywords }',{ keywords })
+            // this.keywordsFiltered = keywords;
+        },
+    },
+    watch: {
+        connect: function () {
+        },
+        ['keywordsFiltered'] ( keywords ) {
+            this.setKeywordsFiltered({ keywords })
         },
     },
     methods: {
@@ -239,6 +247,7 @@ export default {
             'fetchKeywords',
             'saveEvent',
             'saveKeyword',
+            'setKeywordsFiltered',
         ]),
         newMarker(){
             this.dataModal.coordenadas = { lat: null, lng: null };
@@ -261,7 +270,6 @@ export default {
         
         addMarker(event) {
             if(event.latlng){
-                console.log('event',event.latlng)
                 const { lat, lng } = event.latlng;
                 this.dataModal.coordenadas = { lat, lng };
                 this.modalOpen()
@@ -270,10 +278,6 @@ export default {
         },
         remMarker(event) {
             console.log('event',event)
-            // if(event.latlng){
-            //     console.log('event',event.latlng)
-            //     this.markers.push(event.latlng);
-            // }
         },
         
         listKeywords(){
