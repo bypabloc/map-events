@@ -42,7 +42,8 @@ export default {
     [types.FETCH_EVENTS_SUCCESS] (state, { list } ){
         state.events.fetchingData = false;
         state.events.error = null;
-        state.events.data = { list };
+        console.log('list',list)
+        // state.events.data = { list };
     },
     [types.FETCH_EVENTS_FAILURE] (state, { error }){
         state.events.fetchingData = true;
@@ -70,5 +71,10 @@ export default {
     "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
         console.log('SOCKET_EVENT_ADD',{ description, keywords, coordenadas })
         state.events.data.list.push({ description, keywords, coordenadas });
+    },
+    "SOCKET_LIST"(state, { list, keywords }) {
+        console.log('SOCKET_EVENT_ADD',{ list, keywords })
+        state.events.data.list = list;
+        // state.events.data.list.push({ list, keywords });
     },
 }

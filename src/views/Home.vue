@@ -1,6 +1,5 @@
 <template>
     <div style="height: 100vh; width: 100vw;">
-
         <l-map
             v-model="zoom"
             v-model:zoom="zoom"
@@ -205,6 +204,7 @@ export default {
     },
     data() {
         return {
+            tweets: [],
             zoom: 2,
             dataModal: {
                 title: 'Evento',
@@ -230,6 +230,9 @@ export default {
     sockets: {
         connect: function () {
             console.log('socket connected')
+        },
+        keywords({ keywords }) {
+            this.keywordsFiltered = keywords;
         },
     },
     methods: {
