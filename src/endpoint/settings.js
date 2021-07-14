@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-// const baseURL = 'http://localhost:3000'
-const baseURL = 'https://map-events-api.herokuapp.com/'
+export const baseURL = process.env.VUE_APP_BASE_URL ?? 'https://map-events-api.herokuapp.com/';
 
 let headers = {
     'Content-Type' : 'application/json',

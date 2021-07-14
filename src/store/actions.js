@@ -5,11 +5,9 @@ import endpoint, { getError } from '../endpoint'
 
 export default {
     fetchKeywords({commit}){
-
         commit(types.FETCH_KEYWORDS_REQUEST)
         endpoint.getKeywords()
             .then(res => {
-                console.log('res',res)
                 const { list } = res
                 commit( types.FETCH_KEYWORDS_SUCCESS, { list } )
             } )
@@ -19,17 +17,9 @@ export default {
             })
     },
     saveKeyword({commit}, { text } ){
-        
-        // this.$socket.emit('addKeyword',{text:this.keywordsNew})
-
-        console.log('this._vm',this._vm)
-
-        // this._vm.$socket.client.emit('eventName', { text });
-
         commit( types.FETCH_KEYWORD_SAVE_REQUEST )
         endpoint.saveKeyword({ text })
             .then(res => {
-                // this.$socket.emit('addKeyword',{text:this.keywordsNew})
                 const { id, text } = res
                 commit( types.FETCH_KEYWORD_SAVE_SUCCESS, { id, text } )
             } )

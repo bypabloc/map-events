@@ -34,10 +34,6 @@ export const getError = response => {
         let res = {
             message: '',
         }
-
-        console.log('err',err)
-        console.log('response',response)
-
         if(err===422){
             res.message = response?.data?.errors ? response.data.errors.join('<br/>') : ''
         }else if(err===401){
