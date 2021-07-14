@@ -1,10 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
+import socketio from './endpoint/socket'
+import VueSocketIOExt from 'vue-socket.io-extended';
 // import router from './router'
 // import VueSocketIO from 'vue-socket.io'
-import VueSocketIO from './packages/vue-socket.io/dist/vue-socketio'
-import io from 'socket.io-client';
 
 // export const SocketInstance = socketio('http://localhost:3000');
 
@@ -103,33 +103,7 @@ app.mixin({
         },
     },
 })
-// app.use(VueSocketIO, SocketInstance)
-
-const socketio = new VueSocketIO({
-    debug: true,
-    connection: io('http://localhost:3000'),
-    // vuex: {
-    //   store,
-    //   actionPrefix: 'SOCKET_',
-    //   mutationPrefix: 'SOCKET_',
-    // },
-});
-/*
-app.use(socketio, {
-    debug: true,
-    connection: 'http://localhost:3000',
-    vuex: {
-        store,
-        actionPrefix: 'SOCKET_',
-        mutationPrefix: 'SOCKET_'
-    },
-    options: {
-      debug: true,
-      transports: ['websocket', 'polling'],
-    },
-});
-*/
 app.use(VueSweetalert2);
 app.use(store)
-app.use(socketio)
+app.use(VueSocketIOExt, socketio, { store });
 app.mount('#app')

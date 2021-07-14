@@ -1,6 +1,8 @@
 import * as types from './mutations-types'
 import endpoint, { getError } from '../endpoint'
 
+// import io from '../endpoint/socket'
+
 export default {
     fetchKeywords({commit}){
 
@@ -17,9 +19,17 @@ export default {
             })
     },
     saveKeyword({commit}, { text } ){
+        
+        // this.$socket.emit('addKeyword',{text:this.keywordsNew})
+
+        console.log('this._vm',this._vm)
+
+        // this._vm.$socket.client.emit('eventName', { text });
+
         commit( types.FETCH_KEYWORD_SAVE_REQUEST )
         endpoint.saveKeyword({ text })
             .then(res => {
+                // this.$socket.emit('addKeyword',{text:this.keywordsNew})
                 const { id, text } = res
                 commit( types.FETCH_KEYWORD_SAVE_SUCCESS, { id, text } )
             } )
@@ -30,7 +40,6 @@ export default {
     },
 
     fetchEvents({commit},{ keywords }){
-
         commit(types.FETCH_EVENTS_REQUEST)
         endpoint.getEvents({ keywords })
             .then(res => {

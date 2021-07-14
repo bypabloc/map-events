@@ -231,9 +231,6 @@ export default {
         connect: function () {
             console.log('socket connected')
         },
-        customEmit: function (data) {
-            console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)',data)
-        },
     },
     methods: {
         ...mapActions([
@@ -306,8 +303,10 @@ export default {
 
         addKeyword(){
             this.saveKeyword({text:this.keywordsNew})
+            // this.$socket.emit('addKeyword',{text:this.keywordsNew})
             this.modalCloseKeyword()
         },
+
         addEvent(){
             this.saveEvent({...this.dataModal})
             this.modalClose()
@@ -318,13 +317,12 @@ export default {
         },
         ping(){
 
-            this.$socket.emit('pingServer', 'PING!')
+            this.fetchEvents({keywords:this.keywordsFiltered});
+
+            // this.$socket.emit('pingServer', 'PING!')
+
+            // this.$socket.emit("chat-message", "Mensaje por aca")
         },
-    },
-    mounted () {
-        this.$socket.on("chat-message", function(data) {
-            console.log("Mensaje por aca", data)
-        })
     },
     created(){
         this.fetchKeywords();

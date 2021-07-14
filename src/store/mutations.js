@@ -28,7 +28,7 @@ export default {
         state.keywords.save.fetchingData = false;
         state.keywords.save.error = null;
         state.keywords.save.data = { id, text };
-        state.keywords.data.list.push({ id: text, text });
+        // state.keywords.data.list.push({ id: text, text });
     },
     [types.FETCH_KEYWORD_SAVE_FAILURE] (state, { error }){
         state.keywords.save.fetchingData = false;
@@ -56,7 +56,6 @@ export default {
         state.events.save.fetchingData = false;
         state.events.save.error = null;
         state.events.save.data = { description, keywords, coordenadas };
-        state.events.data.list.push({ description, keywords, coordenadas });
         // state.events.data.data = [ { text, created_by, created_at } , ...state.events.data.data ];
     },
     [types.FETCH_EVENT_SAVE_FAILURE] (state, { error }){
@@ -64,15 +63,12 @@ export default {
         state.events.save.error = error;
     },
 
-    SOCKET_CONNECT(state) {
-        state.isConnected = true;
+    "SOCKET_KEYWORD_ADD"(state, { text }) {
+        console.log('SOCKET_KEYWORD_ADD',{ text })
+        state.keywords.data.list.push({ id: text, text });
     },
-
-    SOCKET_DISCONNECT(state) {
-        state.isConnected = false;
+    "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
+        console.log('SOCKET_EVENT_ADD',{ description, keywords, coordenadas })
+        state.events.data.list.push({ description, keywords, coordenadas });
     },
-
-    SOCKET_MESSAGECHANNEL(state, message) {
-        state.socketMessage = message
-    }
 }
