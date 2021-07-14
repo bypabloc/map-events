@@ -3,6 +3,8 @@
         <l-map
             v-model="zoom"
             v-model:zoom="zoom"
+            :center="[me.lat,me.lng]"
+            @update:center="updateZoom"
             @click="addMarker"
         >
 
@@ -164,14 +166,6 @@
                 </div>
             </div>
         </div>
-
-        <button 
-            type="button"
-            class="btn btn-primary fixedButtonRightPing rounded-circle m-3"
-            @click="ping()"
-        >
-            <i class="fas fa-list-ul"></i>
-        </button>
     </div>
 </template>
 
@@ -204,8 +198,12 @@ export default {
     },
     data() {
         return {
-            tweets: [],
-            zoom: 2,
+            me: {
+                lat: 10.148944,
+                lng: -68.563356,
+            },
+            meError: '',
+            zoom: 5,
             dataModal: {
                 title: 'Evento',
                 description: '',
@@ -318,13 +316,23 @@ export default {
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },
-        ping(){
-
-            this.fetchEvents({keywords:this.keywordsFiltered});
-
-            // this.$socket.emit('pingServer', 'PING!')
-
-            // this.$socket.emit("chat-message", "Mensaje por aca")
+        geoFindMe(){
+            if (!navigator.geolocation){
+                this.meError = "Geolocation is not supported by your browser";
+            }
+            navigator.geolocation.getCurrentPosition((position) => {
+                this.me = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                }
+                this.meError = null;
+            }, () => {
+                this.me = null
+                this.meError = "Unable to retrieve your location";
+            });
+        },
+        updateZoom(){
+            this.zoom = 15;
         },
     },
     created(){
@@ -345,6 +353,8 @@ export default {
         }
 
         this.fetchEvents({keywords:this.keywordsFiltered});
+
+        this.geoFindMe()
     },
 };
 </script>
@@ -360,12 +370,6 @@ export default {
         position: fixed;
         bottom: 50px;
         left: 0px; 
-        z-index: 999;
-    }
-    .fixedButtonRightPing{
-        position: fixed;
-        bottom: 50px;
-        right: 0px; 
         z-index: 999;
     }
     .fixedButton{
