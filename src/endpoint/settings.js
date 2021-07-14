@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:3000'
-// const baseURL = 'http://twitter-api.prueba/api/v1'
+// const baseURL = 'http://localhost:3000'
+const baseURL = 'https://map-events-api.herokuapp.com/'
 
 let headers = {
     'Content-Type' : 'application/json',
