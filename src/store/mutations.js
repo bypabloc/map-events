@@ -39,10 +39,9 @@ export default {
         state.events.fetchingData = true;
         state.events.error = null;
     },
-    [types.FETCH_EVENTS_SUCCESS] (state, { list } ){
+    [types.FETCH_EVENTS_SUCCESS] (state){
         state.events.fetchingData = false;
         state.events.error = null;
-        console.log('list',list)
         // state.events.data = { list };
     },
     [types.FETCH_EVENTS_FAILURE] (state, { error }){
@@ -65,16 +64,12 @@ export default {
     },
 
     "SOCKET_KEYWORD_ADD"(state, { text }) {
-        console.log('SOCKET_KEYWORD_ADD',{ text })
         state.keywords.data.list.push({ id: text, text });
     },
     "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
-        console.log('SOCKET_EVENT_ADD',{ description, keywords, coordenadas })
         state.events.data.list.push({ description, keywords, coordenadas });
     },
-    "SOCKET_LIST"(state, { list, keywords }) {
-        console.log('SOCKET_EVENT_ADD',{ list, keywords })
+    "SOCKET_LIST"(state, { list }) {
         state.events.data.list = list;
-        // state.events.data.list.push({ list, keywords });
     },
 }
