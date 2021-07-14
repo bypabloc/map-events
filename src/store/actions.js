@@ -35,6 +35,7 @@ export default {
     },
 
     fetchEvents({commit},{ keywords }){
+        commit( types.SET_KEYWORDS, { keywords } )
         commit(types.FETCH_EVENTS_REQUEST)
         endpoint.getEvents({ keywords })
             .then(res => {

@@ -63,7 +63,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
-                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Guardar</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Suscribir</button>
                     </div>
                 </div>
             </div>
@@ -237,9 +237,11 @@ export default {
     watch: {
         connect: function () {
         },
+        /*
         ['keywordsFiltered'] ( keywords ) {
             this.setKeywordsFiltered({ keywords })
         },
+        */
     },
     methods: {
         ...mapActions([
@@ -317,6 +319,7 @@ export default {
             this.modalClose()
         },
         filterKeywords(){
+            // this.setKeywordsFiltered({ keywords: this.keywordsFiltered })
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },
