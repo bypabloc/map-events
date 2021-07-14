@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const baseURL = process.env.VUE_APP_BASE_URL ?? 'https://map-events-api.herokuapp.com/';
+export const baseURL = process.env.VUE_APP_BASE_URL ?? 'https://bypabloc-map-events-api.herokuapp.com/';
 
 let headers = {
     'Content-Type' : 'application/json',
