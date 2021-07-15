@@ -348,7 +348,10 @@ export default {
                 }
                 this.meError = null;
             }, () => {
-                this.me = null
+                this.me = {
+                    lat: 10.148944,
+                    lng: -68.563356,
+                }
                 this.meError = "Unable to retrieve your location";
             });
         },
