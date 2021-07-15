@@ -1,4 +1,6 @@
 
+// lista de string utilizados para vincular los actions con los mutations
+
 export const FETCH_EVENTS_REQUEST = 'FETCH_EVENTS_REQUEST';
 export const FETCH_EVENTS_SUCCESS = 'FETCH_EVENTS_SUCCESS';
 export const FETCH_EVENTS_FAILURE = 'FETCH_EVENTS_FAILURE';

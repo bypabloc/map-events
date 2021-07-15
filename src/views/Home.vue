@@ -5,8 +5,7 @@
             v-model:zoom="zoom"
             :center="[me.lat,me.lng]"
             @update:center="updateZoom"
-            @click="addMarker"
-        >
+            @click="addMarker">
 
             <l-tile-layer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -169,11 +168,11 @@
     </div>
 </template>
 
-<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
-
 <script>
+// importamos Vuex para el manejador de estados
 import { mapState, mapActions } from "vuex";
 
+// importamos los paquetes necesarios de la libreria "leaflet" para Vue
 import {
   LMap,
   LTileLayer,
@@ -183,8 +182,10 @@ import {
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 
+// importamos "select2" para un select mejor presencial
 import Select2 from 'vue3-select2-component';
 
+// importamos Modal de Bootstrap para manejar un filtrado
 import { Modal } from 'bootstrap';
 
 export default {
@@ -198,12 +199,16 @@ export default {
     },
     data() {
         return {
+            // este objeto es un valor estandar para centrar el mapa
             me: {
                 lat: 10.148944,
                 lng: -68.563356,
             },
+            // si llegasemos a obtener algun error de la funcion "findMe"
             meError: '',
+            // seteamos un valor default para el zoom
             zoom: 5,
+            // creamos un objeto base para el formulario de un nuevo registro
             dataModal: {
                 title: 'Evento',
                 description: '',
@@ -216,75 +221,71 @@ export default {
             },
             modal: null,
             keywordsNew: '',
+            // array para tener los keywords filtrados
             keywordsFiltered: [],
         };
     },
     computed: {
+        // obtenemos los estados "events" y "keywords" para trabajarlos en la vista
         ...mapState([
             'events',
             'keywords',
         ]),
     },
     sockets: {
+        // aca podemos evaluar en la vista si conectamos con el socket en el backend
         connect: function () {
             console.log('socket connected')
         },
-        keywords({ keywords }) {
-            console.log('{ keywords }',{ keywords })
-            // this.keywordsFiltered = keywords;
-        },
-    },
-    watch: {
-        connect: function () {
-        },
-        /*
-        ['keywords.data.list'] ( newValue, oldValue ) {
-            if((newValue?.length>0)&&(!oldValue)){
-                const keys = newValue.map(x=>x.text)
-                this.$socket.client.emit('room', {keywords:keys});
-            }
-        },
-        */
     },
     methods: {
+        // llamamos todas las acciones necesarias (funciones en Vuex)
         ...mapActions([
-            'fetchEvents',
-            'fetchKeywords',
-            'saveEvent',
-            'saveKeyword',
-            'setKeywordsFiltered',
+            'fetchEvents', // para obtener todos los eventos
+            'fetchKeywords', // para obtener todos los keywords
+            'saveEvent', // para guardar un evento
+            'saveKeyword', // para guardar un keyword
         ]),
+        // para abrir un modal con las coordenadas limpias 
         newMarker(){
+            // 
             this.dataModal.coordenadas = { lat: null, lng: null };
             this.modalOpen()
         },
         newKeyword(){
             this.modalOpenKeyword()
         },
+        // para abrir el modal para un nuevo Keyword
         modalOpenKeyword(){
             if(this.modal) this.modal.hide()
+            // instanciamos Modal de Bootstrap
             this.modal = new Modal(document.getElementById('modalKeyword'), {
                 keyboard: false
             })
+            // ejecutamos "show" para mostrar el modal
             this.modal.show();
         },
         modalCloseKeyword(){
+            // limpiamos el formulario y cerramos el modal
             this.keywordsNew = '';
             this.modal.hide();
         },
         
+        // para abrir un modal con las coordenadas seteadas (en el lugar en el que fue dado clic en el mapa)
         addMarker(event) {
             if(event.latlng){
                 const { lat, lng } = event.latlng;
                 this.dataModal.coordenadas = { lat, lng };
                 this.modalOpen()
-                // this.markers.push(event.latlng);
             }
         },
+
+        // funcion para mas adelante, la cual puede servir para remover o interactuar con un evento
         remMarker(event) {
             console.log('event',event)
         },
         
+        // modal para mostrar la lista de los keywords
         listKeywords(){
             if(this.modal) this.modal.hide()
             this.modal = new Modal(document.getElementById('modalKeywords'), {
@@ -292,6 +293,7 @@ export default {
             })
             this.modal.show();
         },
+        // para mostrar un modal para eventos
         modalOpen(){
             if(this.modal) this.modal.hide()
             this.modal = new Modal(document.getElementById('modalEvent'), {
@@ -299,6 +301,7 @@ export default {
             })
             this.modal.show();
         },
+        // para limpiar el form de eventos y cerrar el modal
         modalClose(){
             this.dataModal = {
                 description: '',
@@ -311,21 +314,29 @@ export default {
             this.modal.hide();
         },
 
+        // para agregar un keyword y enviarlo al endpoint
         addKeyword(){
             this.saveKeyword({text:this.keywordsNew})
             // this.$socket.emit('addKeyword',{text:this.keywordsNew})
             this.modalCloseKeyword()
         },
 
+        // para agregar un evento y enviarlo al endpoint
         addEvent(){
             this.saveEvent({...this.dataModal})
             this.modalClose()
         },
+
+        // para filtrar keywords
         filterKeywords(){
+            // se indica una lista de keywords a las cuales se quiere filtrar 
             this.$socket.client.emit('room', {keywords:this.keywordsFiltered});
+
+            // luego se obtiene del endpoint la lista de eventos a partir de los keywords filtrados
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },
+        // para obtener la ubicacion actual
         geoFindMe(){
             if (!navigator.geolocation){
                 this.meError = "Geolocation is not supported by your browser";
@@ -341,17 +352,23 @@ export default {
                 this.meError = "Unable to retrieve your location";
             });
         },
+        // para actualizar el zoom del mapa
         updateZoom(){
             this.zoom = 15;
         },
     },
+    // esto se carga al iniciar el componente
     created(){
+
+        // se ejecuta para llamar todos los keywords del backend
         this.fetchKeywords();
 
         const urlParams = new URLSearchParams(window.location.search);
         
+        // verificamos si indico keywords por los parametros de la url
         const keywords = urlParams.get('keywords');
         if(keywords){
+            // de ser asi se setean para mostrarlos en la vista
             const keywordsToFilter = [];
             const arr = keywords.split(",");
             if(arr?.length>0){
@@ -359,17 +376,21 @@ export default {
                     keywordsToFilter.push(e)
                 }
             }
+            // se setean tambien en la data del componente
             this.keywordsFiltered = keywordsToFilter;
         }
 
+        // se obtiene la lista de eventos
         this.fetchEvents({keywords:this.keywordsFiltered});
 
+        // se ejecuta findMe, solo servira si se autoriza que la pagina tenga dicho permiso
         this.geoFindMe()
     },
 };
 </script>
 
 <style>
+    /* estilos para mover los botones a donde se quiere */
     .fixedButtonLeft{
         position: fixed;
         bottom: 0px;
@@ -389,6 +410,7 @@ export default {
         z-index: 999;
     }
 
+    /* un pequeño fix para el select2 */
     .select2-container--open .select2-dropdown--below {
         z-index: 9999;
     }
