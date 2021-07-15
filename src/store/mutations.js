@@ -2,6 +2,8 @@ import * as types from './mutations-types'
 
 export default {
 
+    // la accion de cada una de estas mutaciones esta explicada en el "actions"
+    // a exceppcion de las de sockets
     [types.FETCH_KEYWORDS_REQUEST] (state){
         state.keywords.fetchingData = true;
         state.keywords.error = null;
@@ -66,14 +68,15 @@ export default {
         state.keywordsFiltered = keywords;
     },
 
+    // sockets:
+    // este socket respondera cada vez que se emita un envio desde el backend a "KEYWORD_ADD"
+    // los keywords se disparan a todas los users que utilicen el sistema
     "SOCKET_KEYWORD_ADD"(state, { text }) {
         state.keywords.data.list.push({ id: text, text });
     },
+    // los events llegaran por un filtrado en el backend (debe pertenecer a la sala correspondiente)
+    // desde el backend espera ser llamado como "EVENT_ADD"
     "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
         state.events.data.list.push({ description, keywords, coordenadas });
-    },
-    "SOCKET_LIST"(state, { list }) {
-        console.log('list',list)
-        // state.events.data.list = list;
     },
 }

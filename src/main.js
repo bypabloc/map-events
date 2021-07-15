@@ -3,10 +3,6 @@ import App from './App.vue'
 import store from './store'
 import socketio from './endpoint/socket'
 import VueSocketIOExt from 'vue-socket.io-extended';
-// import router from './router'
-// import VueSocketIO from 'vue-socket.io'
-
-// export const SocketInstance = socketio('http://localhost:3000');
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -105,5 +101,6 @@ app.mixin({
 })
 app.use(VueSweetalert2);
 app.use(store)
+// importamos "vue-socket.io-extended" el cual trae la configuracion necesaria para utilizar socket.io en Vue
 app.use(VueSocketIOExt, socketio, { store });
 app.mount('#app')

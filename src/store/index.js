@@ -8,6 +8,7 @@ import getters from './getters'
 
 const debug = process.env.NODE_ENV !== 'production';
 
+// utilizamos el patron "store" para la administracion de estados
 export default createStore({
     strict: debug,
     plugins: debug ? [createLogger()] : [],
