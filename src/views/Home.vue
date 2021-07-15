@@ -238,8 +238,11 @@ export default {
         connect: function () {
         },
         /*
-        ['keywordsFiltered'] ( keywords ) {
-            this.setKeywordsFiltered({ keywords })
+        ['keywords.data.list'] ( newValue, oldValue ) {
+            if((newValue?.length>0)&&(!oldValue)){
+                const keys = newValue.map(x=>x.text)
+                this.$socket.client.emit('room', {keywords:keys});
+            }
         },
         */
     },
@@ -319,7 +322,7 @@ export default {
             this.modalClose()
         },
         filterKeywords(){
-            // this.setKeywordsFiltered({ keywords: this.keywordsFiltered })
+            this.$socket.client.emit('room', {keywords:this.keywordsFiltered});
             this.fetchEvents({keywords:this.keywordsFiltered});
             this.modalClose()
         },

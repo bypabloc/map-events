@@ -71,15 +71,7 @@ export default {
         state.keywords.data.list.push({ id: text, text });
     },
     "SOCKET_EVENT_ADD"(state, { description, keywords, coordenadas }) {
-        const keywordsFiltered = state.keywordsFiltered
-        if(keywordsFiltered.length>0){
-            const matched = keywordsFiltered.filter(element => keywords.includes(element));
-            if(matched.length>0){
-                state.events.data.list.push({ description, keywords, coordenadas });
-            }
-        }else{
-            state.events.data.list.push({ description, keywords, coordenadas });
-        }
+        state.events.data.list.push({ description, keywords, coordenadas });
     },
     "SOCKET_LIST"(state, { list }) {
         console.log('list',list)
