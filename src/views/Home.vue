@@ -63,7 +63,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" v-on:click="modalClose">Close</button>
-                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Suscribir</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addKeyword">Guardar</button>
                     </div>
                 </div>
             </div>
