@@ -28,7 +28,6 @@ export default {
         state.keywords.save.fetchingData = false;
         state.keywords.save.error = null;
         state.keywords.save.data = { id, text };
-        state.keywords.data.list.push({ id: text, text });
     },
     [types.FETCH_KEYWORD_SAVE_FAILURE] (state, { error }){
         state.keywords.save.fetchingData = false;
